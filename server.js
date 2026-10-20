@@ -4,7 +4,7 @@ import { extname, join, normalize } from 'node:path';
 import { randomUUID } from 'node:crypto';
 
 const PORT = Number(process.env.PORT || 3000);
-const ROOT = new URL('./public/', import.meta.url).pathname;
+const ROOT = new URL('./', import.meta.url).pathname;
 const MIME = { '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.svg':'image/svg+xml', '.json':'application/json; charset=utf-8', '.ico':'image/x-icon' };
 const send = (res, status, body, type='application/json; charset=utf-8') => { res.writeHead(status, { 'Content-Type': type, 'X-Content-Type-Options':'nosniff', 'Referrer-Policy':'strict-origin-when-cross-origin', 'X-Frame-Options':'DENY', 'Permissions-Policy':'camera=(), microphone=(), geolocation=()' }); res.end(typeof body === 'string' ? body : JSON.stringify(body)); };
 async function bodyJson(req) { let data=''; for await (const chunk of req) { data += chunk; if (data.length > 1_000_000) throw new Error('Request too large'); } return JSON.parse(data || '{}'); }
